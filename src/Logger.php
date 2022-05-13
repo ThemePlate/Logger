@@ -25,7 +25,7 @@ class Logger {
 
 	public function channel( string $name ): BaseLogger {
 
-		return new BaseLogger( $name, array( $this->handler( $name ) ) );
+		return new BaseLogger( $name, array( $this->handler( $name ) ), array( $this->processor() ) );
 
 	}
 
@@ -55,6 +55,22 @@ class Logger {
 		$format = "[%datetime%] %level_name% > %message% %context% %extra%\n";
 
 		return new LineFormatter( $format, 'Y-m-d H:i:s', true, true );
+
+	}
+
+	protected function processor(): callable {
+
+		return static function( $record ) {
+
+			$record['context'] = array(
+				'doing_cron' => defined( 'DOING_CRON' ) && DOING_CRON,
+				'doing_ajax' => defined( 'DOING_AJAX' ) && DOING_AJAX,
+				'is_admin'   => defined( 'WP_ADMIN' ) && WP_ADMIN,
+			);
+
+			return $record;
+
+		};
 
 	}
 
