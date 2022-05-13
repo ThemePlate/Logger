@@ -75,8 +75,8 @@ class Logger {
 		return static function( $record ) use ( $context ) {
 
 			if ( $context ) {
-				$record['context'] = array_merge(
-					$record['context'],
+				$record['extra'] = array_merge(
+					$record['extra'],
 					array(
 						'doing_cron' => defined( 'DOING_CRON' ) && DOING_CRON,
 						'doing_ajax' => defined( 'DOING_AJAX' ) && DOING_AJAX,
