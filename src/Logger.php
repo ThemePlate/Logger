@@ -14,6 +14,10 @@ use Monolog\Handler\RotatingFileHandler;
 class Logger {
 
 	private string $path;
+	/**
+	 * @var array<string, BaseLogger>
+	 */
+	private static array $instances = array();
 
 
 	public function __construct( string $folder_name = 'logs', string $base_path = WP_CONTENT_DIR ) {
@@ -25,7 +29,15 @@ class Logger {
 
 	public function channel( string $name ): BaseLogger {
 
-		return new BaseLogger( $name, array( $this->handler( $name ) ), array( $this->processor() ) );
+		if ( ! isset( self::$instances[ $name ] ) ) {
+			self::$instances[ $name ] = new BaseLogger(
+				$name,
+				array( $this->handler( $name ) ),
+				array( $this->processor() )
+			);
+		}
+
+		return self::$instances[ $name ];
 
 	}
 
