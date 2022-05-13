@@ -27,13 +27,13 @@ class Logger {
 	}
 
 
-	public function channel( string $name ): BaseLogger {
+	public function channel( string $name, bool $context = false ): BaseLogger {
 
 		if ( ! isset( self::$instances[ $name ] ) ) {
 			self::$instances[ $name ] = new BaseLogger(
 				$name,
 				array( $this->handler( $name ) ),
-				array( $this->processor() )
+				array( $this->processor( $context ) )
 			);
 		}
 
@@ -70,15 +70,17 @@ class Logger {
 
 	}
 
-	protected function processor(): callable {
+	protected function processor( bool $context ): callable {
 
-		return static function( $record ) {
+		return static function( $record ) use ( $context ) {
 
-			$record['context'] = array(
-				'doing_cron' => defined( 'DOING_CRON' ) && DOING_CRON,
-				'doing_ajax' => defined( 'DOING_AJAX' ) && DOING_AJAX,
-				'is_admin'   => defined( 'WP_ADMIN' ) && WP_ADMIN,
-			);
+			if ( $context ) {
+				$record['context'] = array(
+					'doing_cron' => defined( 'DOING_CRON' ) && DOING_CRON,
+					'doing_ajax' => defined( 'DOING_AJAX' ) && DOING_AJAX,
+					'is_admin'   => defined( 'WP_ADMIN' ) && WP_ADMIN,
+				);
+			}
 
 			return $record;
 
