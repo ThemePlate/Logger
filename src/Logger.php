@@ -75,10 +75,13 @@ class Logger {
 		return static function( $record ) use ( $context ) {
 
 			if ( $context ) {
-				$record['context'] = array(
-					'doing_cron' => defined( 'DOING_CRON' ) && DOING_CRON,
-					'doing_ajax' => defined( 'DOING_AJAX' ) && DOING_AJAX,
-					'is_admin'   => defined( 'WP_ADMIN' ) && WP_ADMIN,
+				$record['context'] = array_merge(
+					$record['context'],
+					array(
+						'doing_cron' => defined( 'DOING_CRON' ) && DOING_CRON,
+						'doing_ajax' => defined( 'DOING_AJAX' ) && DOING_AJAX,
+						'is_admin'   => defined( 'WP_ADMIN' ) && WP_ADMIN,
+					)
 				);
 			}
 
