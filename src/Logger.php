@@ -27,6 +27,13 @@ class Logger {
 	}
 
 
+	public function get_path(): string {
+
+		return $this->path;
+
+	}
+
+
 	public function channel( string $name, bool $context = false ): BaseLogger {
 
 		if ( ! isset( self::$instances[ $name ] ) ) {
