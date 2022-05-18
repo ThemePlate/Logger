@@ -22,7 +22,7 @@ class Logger {
 
 	public function __construct( string $folder_name = 'logs', string $base_path = WP_CONTENT_DIR ) {
 
-		$this->path = trailingslashit( $base_path ) . $folder_name;
+		$this->path = trailingslashit( $base_path ) . trim( $folder_name, '/\\' );
 
 	}
 
@@ -76,6 +76,7 @@ class Logger {
 		return new LineFormatter( $format, 'Y-m-d H:i:s', true, true );
 
 	}
+
 
 	protected function processor( bool $context ): callable {
 
