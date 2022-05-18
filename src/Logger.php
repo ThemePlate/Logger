@@ -95,6 +95,16 @@ class Logger {
 				);
 			}
 
+			if ( $forced ) {
+				unset( $record['context']['wp'] );
+
+				$index = array_search( 'wp', $record['context'], true );
+
+				if ( false !== $index ) {
+					unset( $record['context'][ $index ] );
+				}
+			}
+
 			return $record;
 
 		};
