@@ -82,7 +82,9 @@ class Logger {
 
 		return static function( $record ) use ( $context ) {
 
-			if ( $context ) {
+			$forced = in_array( 'wp', $record['context'], true ) || ( $record['context']['wp'] ?? false );
+
+			if ( $context || $forced ) {
 				$record['extra'] = array_merge(
 					$record['extra'],
 					array(
