@@ -82,9 +82,9 @@ class Logger {
 
 		return static function( $record ) use ( $context ) {
 
-			$forced = in_array( 'wp', $record['context'], true ) || ( $record['context']['wp'] ?? false );
+			$forced = array_key_exists( 'wp', $record['context'] ) ? 'wp' : array_search( 'wp', $record['context'], true );
 
-			if ( $context || $forced ) {
+			if ( $context || false !== $forced ) {
 				$record['extra'] = array_merge(
 					$record['extra'],
 					array(
@@ -93,16 +93,8 @@ class Logger {
 						'is_admin'   => defined( 'WP_ADMIN' ) && WP_ADMIN,
 					)
 				);
-			}
 
-			if ( $forced ) {
-				unset( $record['context']['wp'] );
-
-				$index = array_search( 'wp', $record['context'], true );
-
-				if ( false !== $index ) {
-					unset( $record['context'][ $index ] );
-				}
+				unset( $record['context'][ $forced ] );
 			}
 
 			return $record;
