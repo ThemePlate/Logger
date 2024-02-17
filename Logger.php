@@ -17,7 +17,7 @@ class Logger {
 	/**
 	 * @var array<string, BaseLogger>
 	 */
-	private static array $instances = array();
+	protected array $instances = array();
 
 
 	public function __construct( string $folder_name = 'logs', string $base_path = WP_CONTENT_DIR ) {
@@ -49,17 +49,17 @@ class Logger {
 
 	public function channel( string $name, bool $context = false ): BaseLogger {
 
-		if ( ! isset( self::$instances[ $name ] ) ) {
+		if ( ! isset( $this->instances[ $name ] ) ) {
 			$channel = $this->path . DIRECTORY_SEPARATOR . $name . '.log';
 
-			self::$instances[ $name ] = new BaseLogger(
+			$this->instances[ $name ] = new BaseLogger(
 				$name,
 				array( new Handler( $channel ) ),
 				array( new Processor( $context ) )
 			);
 		}
 
-		return self::$instances[ $name ];
+		return $this->instances[ $name ];
 
 	}
 
