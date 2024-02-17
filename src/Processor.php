@@ -25,7 +25,9 @@ class Processor implements ProcessorInterface {
 		$forced = array_key_exists( 'wp', $record['context'] ) ? 'wp' : array_search( 'wp', $record['context'], true );
 
 		if ( $this->context || false !== $forced ) {
-			$record['extra'] = array_merge(
+			$context = $record['context'];
+
+			$extra = array_merge(
 				$record['extra'],
 				array(
 					'doing_cron' => defined( 'DOING_CRON' ) && DOING_CRON,
@@ -34,7 +36,9 @@ class Processor implements ProcessorInterface {
 				)
 			);
 
-			unset( $record['context'][ $forced ] );
+			unset( $context[ $forced ] );
+
+			$record = call_user_func_array( array( $record, 'with' ), compact( 'context', 'extra' ) );
 		}
 
 		return $record;
