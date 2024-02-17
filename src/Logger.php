@@ -80,7 +80,7 @@ class Logger {
 
 	protected function processor( bool $context ): callable {
 
-		return static function( $record ) use ( $context ) {
+		return static function ( $record ) use ( $context ) {
 
 			$forced = array_key_exists( 'wp', $record['context'] ) ? 'wp' : array_search( 'wp', $record['context'], true );
 
