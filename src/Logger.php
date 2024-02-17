@@ -22,7 +22,7 @@ class Logger {
 
 	public function __construct( string $folder_name = 'logs', string $base_path = WP_CONTENT_DIR ) {
 
-		$this->path = $this->prepare_pathname( $base_path, false ) . DIRECTORY_SEPARATOR . $this->prepare_pathname( $folder_name );
+		$this->path = $this->prepare_pathname( $base_path, false ) . $this->prepare_pathname( $folder_name );
 
 	}
 
@@ -37,14 +37,14 @@ class Logger {
 			$value = ltrim( $value, $characters );
 		}
 
-		return $value;
+		return $value . DIRECTORY_SEPARATOR;
 
 	}
 
 
 	public function get_path(): string {
 
-		return $this->path;
+		return rtrim( $this->path, DIRECTORY_SEPARATOR );
 
 	}
 
@@ -66,7 +66,7 @@ class Logger {
 
 	protected function handler( string $channel ): RotatingFileHandler {
 
-		$filename = trailingslashit( $this->path ) . $channel . '.log';
+		$filename = $this->path . $channel . '.log';
 		$handler  = new RotatingFileHandler(
 			$filename,
 			0,
