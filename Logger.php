@@ -13,7 +13,7 @@ use ThemePlate\Logger\Processor;
 
 class Logger {
 
-	private string $path;
+	public readonly string $path;
 	/**
 	 * @var array<string, BaseLogger>
 	 */
@@ -22,7 +22,12 @@ class Logger {
 
 	public function __construct( string $folder_name = 'logs', string $base_path = WP_CONTENT_DIR ) {
 
-		$this->path = $this->prepare_pathname( $base_path, false ) . $this->prepare_pathname( $folder_name );
+		$path_parts = array(
+			$this->prepare_pathname( $base_path, false ),
+			$this->prepare_pathname( $folder_name ),
+		);
+
+		$this->path = implode( DIRECTORY_SEPARATOR, $path_parts );
 
 	}
 
@@ -37,14 +42,7 @@ class Logger {
 			$value = ltrim( $value, $characters );
 		}
 
-		return $value . DIRECTORY_SEPARATOR;
-
-	}
-
-
-	public function get_path(): string {
-
-		return rtrim( $this->path, DIRECTORY_SEPARATOR );
+		return $value;
 
 	}
 

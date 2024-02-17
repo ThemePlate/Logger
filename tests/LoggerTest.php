@@ -14,7 +14,7 @@ class LoggerTest extends WP_UnitTestCase {
 	public function test_default_path_is_at_wp_content_dir_named_logs(): void {
 		$logger = new Logger();
 
-		$this->assertSame( WP_CONTENT_DIR . '/logs', $logger->get_path() );
+		$this->assertSame( WP_CONTENT_DIR . '/logs', $logger->path );
 	}
 
 	public function for_path_is_correctly_slashed_even_if_wrongly_supplied(): array {
@@ -50,7 +50,7 @@ class LoggerTest extends WP_UnitTestCase {
 
 		$logger = new Logger( $folder_name, $base_path );
 
-		$this->assertSame( $expect, $logger->get_path() );
+		$this->assertSame( $expect, $logger->path );
 	}
 
 	public function for_every_channel_instances_are_cached(): array {
