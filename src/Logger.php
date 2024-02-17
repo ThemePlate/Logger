@@ -22,7 +22,22 @@ class Logger {
 
 	public function __construct( string $folder_name = 'logs', string $base_path = WP_CONTENT_DIR ) {
 
-		$this->path = trailingslashit( $base_path ) . trim( $folder_name, '/\\' );
+		$this->path = $this->prepare_pathname( $base_path, false ) . DIRECTORY_SEPARATOR . $this->prepare_pathname( $folder_name );
+
+	}
+
+
+	protected function prepare_pathname( string $value, bool $both_sides = true ): string {
+
+		static $characters = '/\\ ';
+
+		$value = rtrim( $value, $characters );
+
+		if ( $both_sides ) {
+			$value = ltrim( $value, $characters );
+		}
+
+		return $value;
 
 	}
 
