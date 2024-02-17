@@ -29,8 +29,11 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"ThemePlate\\": "src"
-		}
+			"ThemePlate\\Logger\\": "src"
+		},
+		"files": [
+			"Logger.php"
+		]
 	},
 	"autoload-dev": {
 		"psr-4": {
