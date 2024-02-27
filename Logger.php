@@ -49,6 +49,10 @@ class Logger {
 
 	public function channel( string $name, bool $context = false ): BaseLogger {
 
+		if ( '' === $name ) {
+			$name = 'default';
+		}
+
 		if ( ! isset( $this->instances[ $name ] ) ) {
 			$channel = $this->path . DIRECTORY_SEPARATOR . $name . '.log';
 
