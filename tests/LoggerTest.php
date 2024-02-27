@@ -14,7 +14,7 @@ class LoggerTest extends WP_UnitTestCase {
 	public function test_default_path_is_at_wp_content_dir_named_logs(): void {
 		$logger = new Logger();
 
-		$this->assertSame( WP_CONTENT_DIR . '/logs', $logger->path );
+		$this->assertSame( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'logs', $logger->path );
 	}
 
 	public function for_path_is_correctly_slashed_even_if_wrongly_supplied(): array {
@@ -53,8 +53,30 @@ class LoggerTest extends WP_UnitTestCase {
 		$this->assertSame( $expect, $logger->path );
 	}
 
+	public function for_path_empty_strings(): array {
+		return array(
+			'with empty folder name' => array( '', null, WP_CONTENT_DIR . '/' ),
+			'with empty base path'   => array( 'test', '', '/test' ),
+			'with empty both params' => array( '', '', '/' ),
+		);
+	}
+
+	/**
+	 * @dataProvider for_path_empty_strings
+	 */
+	public function test_path_empty_strings( string $folder_name, ?string $base_path, string $expected ): void {
+		if ( null === $base_path ) {
+			$logger = new Logger( $folder_name );
+		} else {
+			$logger = new Logger( $folder_name, $base_path );
+		}
+
+		$this->assertSame( $expected, $logger->path );
+	}
+
 	public function for_every_channel_instances_are_cached(): array {
 		return array(
+			array( '' ),
 			array( 'api' ),
 			array( 'app' ),
 		);
