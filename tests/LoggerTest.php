@@ -7,17 +7,18 @@
 namespace Tests;
 
 use Monolog\Logger as BaseLogger;
+use PHPUnit\Framework\Attributes\DataProvider;
 use ThemePlate\Logger;
-use WP_UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
-class LoggerTest extends WP_UnitTestCase {
+class LoggerTest extends TestCase {
 	public function test_default_path_is_at_wp_content_dir_named_logs(): void {
 		$logger = new Logger();
 
 		$this->assertSame( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'logs', $logger->path );
 	}
 
-	public function for_path_is_correctly_slashed_even_if_wrongly_supplied(): array {
+	public static function for_path_is_correctly_slashed_even_if_wrongly_supplied(): array {
 		return array(
 			'with 1 slash prefixed on folder name'     => array( -1 ),
 			'with 1 slash suffixed on folder name'     => array( 1 ),
@@ -28,9 +29,7 @@ class LoggerTest extends WP_UnitTestCase {
 		);
 	}
 
-	/**
-	 * @dataProvider for_path_is_correctly_slashed_even_if_wrongly_supplied
-	 */
+	#[DataProvider( 'for_path_is_correctly_slashed_even_if_wrongly_supplied' )]
 	public function test_path_is_correctly_slashed_even_if_wrongly_supplied( int $slashed_folder_name, bool $trailing_slashed_base_path = false ): void {
 		$folder_name = 'mylogs';
 		$base_path   = 'path/to/save';
@@ -53,7 +52,7 @@ class LoggerTest extends WP_UnitTestCase {
 		$this->assertSame( $expect, $logger->path );
 	}
 
-	public function for_path_empty_strings(): array {
+	public static function for_path_empty_strings(): array {
 		return array(
 			'with empty folder name' => array( '', null, WP_CONTENT_DIR . '/' ),
 			'with empty base path'   => array( 'test', '', '/test' ),
@@ -61,9 +60,7 @@ class LoggerTest extends WP_UnitTestCase {
 		);
 	}
 
-	/**
-	 * @dataProvider for_path_empty_strings
-	 */
+	#[DataProvider( 'for_path_empty_strings' )]
 	public function test_path_empty_strings( string $folder_name, ?string $base_path, string $expected ): void {
 		if ( null === $base_path ) {
 			$logger = new Logger( $folder_name );
@@ -74,7 +71,7 @@ class LoggerTest extends WP_UnitTestCase {
 		$this->assertSame( $expected, $logger->path );
 	}
 
-	public function for_every_channel_instances_are_cached(): array {
+	public static function for_every_channel_instances_are_cached(): array {
 		return array(
 			array( '' ),
 			array( 'api' ),
@@ -82,9 +79,7 @@ class LoggerTest extends WP_UnitTestCase {
 		);
 	}
 
-	/**
-	 * @dataProvider for_every_channel_instances_are_cached
-	 */
+	#[DataProvider( 'for_every_channel_instances_are_cached' )]
 	public function test_every_channel_instances_are_cached( string $name ): void {
 		$logger = new Logger();
 
