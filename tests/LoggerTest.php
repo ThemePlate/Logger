@@ -4,6 +4,8 @@
  * @package ThemePlate
  */
 
+declare(strict_types=1);
+
 namespace Tests;
 
 use Monolog\Logger as BaseLogger;
@@ -11,7 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use ThemePlate\Logger;
 use PHPUnit\Framework\TestCase;
 
-class LoggerTest extends TestCase {
+final class LoggerTest extends TestCase {
 	public function test_default_path_is_at_wp_content_dir_named_logs(): void {
 		$logger = new Logger();
 
