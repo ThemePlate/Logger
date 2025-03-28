@@ -64,11 +64,7 @@ final class LoggerTest extends TestCase {
 
 	#[DataProvider( 'for_path_empty_strings' )]
 	public function test_path_empty_strings( string $folder_name, ?string $base_path, string $expected ): void {
-		if ( null === $base_path ) {
-			$logger = new Logger( $folder_name );
-		} else {
-			$logger = new Logger( $folder_name, $base_path );
-		}
+		$logger = null === $base_path ? new Logger( $folder_name ) : new Logger( $folder_name, $base_path );
 
 		$this->assertSame( $expected, $logger->path );
 	}

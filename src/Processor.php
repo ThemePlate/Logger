@@ -14,13 +14,7 @@ use Monolog\Processor\ProcessorInterface;
 
 class Processor implements ProcessorInterface {
 
-	protected bool $context;
-
-	public function __construct( bool $context ) {
-
-		$this->context = $context;
-
-	}
+	public function __construct( protected bool $context ) {}
 
 	public function __invoke( LogRecord $record ): LogRecord {
 
@@ -40,7 +34,7 @@ class Processor implements ProcessorInterface {
 
 			unset( $context[ $forced ] );
 
-			$record = call_user_func_array( array( $record, 'with' ), compact( 'context', 'extra' ) );
+			$record = $record->with( ...compact( 'context', 'extra' ) );
 		}
 
 		return $record;
