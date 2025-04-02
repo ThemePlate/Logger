@@ -18,13 +18,13 @@ class Processor implements ProcessorInterface {
 
 	public function __invoke( LogRecord $record ): LogRecord {
 
-		$forced = array_key_exists( 'wp', $record['context'] ) ? 'wp' : array_search( 'wp', $record['context'], true );
+		$rec_arr = $record->toArray();
+		$context = $rec_arr['context'];
+		$forced  = array_key_exists( 'wp', $context ) ? 'wp' : array_search( 'wp', $context, true );
 
 		if ( $this->context || false !== $forced ) {
-			$context = $record['context'];
-
 			$extra = array_merge(
-				$record['extra'],
+				$rec_arr['extra'],
 				array(
 					'doing_cron' => defined( 'DOING_CRON' ) && DOING_CRON,
 					'doing_ajax' => defined( 'DOING_AJAX' ) && DOING_AJAX,
