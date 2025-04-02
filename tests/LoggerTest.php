@@ -20,6 +20,7 @@ final class LoggerTest extends TestCase {
 		$this->assertSame( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'logs', $logger->path );
 	}
 
+	/** @return array<string, array<int, int|bool>> */
 	public static function for_path_is_correctly_slashed_even_if_wrongly_supplied(): array {
 		return array(
 			'with 1 slash prefixed on folder name'     => array( -1 ),
@@ -54,6 +55,7 @@ final class LoggerTest extends TestCase {
 		$this->assertSame( $expect, $logger->path );
 	}
 
+	/** @return array<string, array<int, ?string>> */
 	public static function for_path_empty_strings(): array {
 		return array(
 			'with empty folder name' => array( '', null, WP_CONTENT_DIR . '/' ),
@@ -69,6 +71,7 @@ final class LoggerTest extends TestCase {
 		$this->assertSame( $expected, $logger->path );
 	}
 
+	/** @return array<int, array<int, string>> */
 	public static function for_every_channel_instances_are_cached(): array {
 		return array(
 			array( '' ),

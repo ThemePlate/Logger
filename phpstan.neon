@@ -1,5 +1,5 @@
 parameters:
-  level: 5
+  level: 8
   excludePaths:
     analyse:
       - %currentWorkingDirectory%/dependencies?
@@ -8,3 +8,7 @@ parameters:
   scanDirectories:
     - %currentWorkingDirectory%/.cache/wordpress
     - %currentWorkingDirectory%/.cache/wordpress-tests-lib
+  ignoreErrors:
+    -
+      identifier: booleanAnd.rightAlwaysTrue
+      path: %currentWorkingDirectory%/src/Processor.php
